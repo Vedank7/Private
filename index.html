@@ -132,7 +132,7 @@ button:hover {
         Operator: You & Me 😌
 
         <div class="bigLove">
-            MY SWEETHAARTT <3
+            MY SWEETHAARTT &lt;3
         </div>
     </div>
 </div>
@@ -185,6 +185,14 @@ function goFinal() {
 
     let message = "Mission Selected 😌";
 
+    if(selectedMode === "dinner") {
+        message =
+        "Dinner Date Confirmed 🍽️\n\n" +
+        "Location Locked:\n" +
+        "Kona Kona - Andheri 😌\n\n" +
+        "Dress nice. Main character energy required.";
+    }
+
     if(selectedMode === "surprise") {
         message =
         "Surprise Mode Activated 😈\n\n" +
@@ -202,7 +210,7 @@ function goFinal() {
 }
 
 function approveMission() {
-    document.querySelector("button").style.display = "none";
+    document.querySelector("#finalScreen button").style.display = "none";
     document.getElementById("celebration").style.display = "block";
 }
 

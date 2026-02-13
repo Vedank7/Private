@@ -69,9 +69,34 @@
         document.getElementById("celebration").classList.remove("hidden");
     }
 
-    function sayNo() {
-        noClickCount++;
-        yesSize += 10;
+function sayNo() {
+    noClickCount++;
+
+    let yesBtn = document.getElementById("yesBtn");
+    let noBtn = document.getElementById("noBtn");
+
+    // Make YES grow dramatically
+    yesSize += 25;
+    yesBtn.style.fontSize = yesSize + "px";
+    yesBtn.style.padding = (yesSize * 0.8) + "px";
+
+    // Update NO button text progressively
+    if (noClickCount === 1) {
+        noBtn.innerText = "Are you sure?";
+    } else if (noClickCount === 2) {
+        noBtn.innerText = "Think carefully 😏";
+    } else if (noClickCount === 3) {
+        noBtn.innerText = "Pleaseeee 🥺";
+    } else if (noClickCount === 4) {
+        noBtn.innerText = "Last chance 😭";
+    } else {
+        // Make YES take over the screen
+        yesBtn.style.width = "90vw";
+        yesBtn.style.height = "25vh";
+        yesBtn.style.fontSize = "40px";
+        noBtn.style.display = "none";
+    }
+}
         document.getElementById("yesBtn").style.fontSize = yesSize + "px";
         document.getElementById("yesBtn").style.padding = (yesSize) + "px";
 

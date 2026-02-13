@@ -2,74 +2,103 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tomorrow’s Mission 😌</title>
+<title>MISSION: Tomorrow 😈</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ffe6f0,#ffd1dc);
+    font-family: monospace;
+    background: black;
+    color: #00ff88;
     text-align: center;
-    padding: 20px;
-    overflow-x: hidden;
+    overflow: hidden;
+}
+
+/* Animated background grid */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        #003300 0px,
+        #003300 1px,
+        transparent 1px,
+        transparent 40px
+    ),
+    repeating-linear-gradient(
+        90deg,
+        #003300 0px,
+        #003300 1px,
+        transparent 1px,
+        transparent 40px
+    );
+    animation: moveGrid 20s linear infinite;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+@keyframes moveGrid {
+    from { transform: translate(0,0); }
+    to { transform: translate(-200px,-200px); }
 }
 
 h1 {
-    color: #d63384;
+    margin-top: 40px;
+    font-size: 22px;
+    text-shadow: 0 0 10px #00ff88;
 }
 
 button {
     padding: 12px 20px;
     margin: 10px;
     font-size: 16px;
-    border: none;
-    border-radius: 12px;
+    border: 2px solid #00ff88;
+    background: black;
+    color: #00ff88;
+    border-radius: 10px;
     cursor: pointer;
-    background-color: #ff4d6d;
-    color: white;
     transition: 0.3s;
 }
 
 button:hover {
-    transform: scale(1.05);
+    background: #00ff88;
+    color: black;
+    box-shadow: 0 0 15px #00ff88;
 }
 
 .screen {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease;
     display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease;
 }
 
 .screen.active {
-    opacity: 1;
-    transform: translateY(0);
     display: block;
+    opacity: 1;
+    transform: scale(1);
 }
 
-#reaction {
-    margin-top: 15px;
-    font-style: italic;
-    color: #555;
-}
+.glowPink { color:#ff4d6d; text-shadow:0 0 15px #ff4d6d; }
+.glowPurple { color:#c77dff; text-shadow:0 0 15px #c77dff; }
+.glowBlue { color:#4cc9f0; text-shadow:0 0 15px #4cc9f0; }
+.glowGold { color:#ffd60a; text-shadow:0 0 15px #ffd60a; }
 
 #countdown {
     margin-top: 15px;
-    font-weight: bold;
-    color: #444;
-}
-
-#yesBtn {
-    background-color: #ff0055;
-}
-
-#noBtn {
-    background-color: #333;
 }
 
 #celebration {
-    display: none;
-    margin-top: 20px;
+    display:none;
+    font-size:20px;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
 }
 </style>
 </head>
@@ -77,15 +106,13 @@ button:hover {
 <body>
 
 <div id="step1" class="screen active">
-    <h1>What do you feel like doing tomorrow? 😌</h1>
+    <h1>SELECT TOMORROW'S MISSION 😏</h1>
 
-    <button onclick="chooseOption('dinner')">🍝 Just a cozy dinner</button>
-    <button onclick="chooseOption('movie')">🎬 Movie + Dinner</button>
-    <button onclick="chooseOption('tiramisu')">🍰 Tiramisu hopping</button>
-    <button onclick="chooseOption('walk')">🌊 Night walk + ice cream</button>
-    <button onclick="chooseOption('surprise')">🎲 Surprise me</button>
-
-    <div id="reaction"></div>
+    <button onclick="chooseOption('dinner')">> Cozy Dinner</button>
+    <button onclick="chooseOption('movie')">> Movie + Dinner</button>
+    <button onclick="chooseOption('tiramisu')">> Tiramisu Hopping</button>
+    <button onclick="chooseOption('walk')">> Night Walk + Ice Cream</button>
+    <button onclick="chooseOption('surprise')">> Surprise Mode</button>
 </div>
 
 <div id="step2" class="screen">
@@ -95,17 +122,15 @@ button:hover {
 
 <div id="finalScreen" class="screen">
     <h1 id="finalText"></h1>
-
     <div id="countdown"></div>
 
-    <br>
-
-    <button id="yesBtn" onclick="sayYes()">Yes 😍</button>
-    <button id="noBtn" onclick="sayNo()">No 🙄</button>
+    <button id="yesBtn" onclick="sayYes()">ACCEPT MISSION 💚</button>
+    <button id="noBtn" onclick="sayNo()">DECLINE ❌</button>
 
     <div id="celebration">
-        <h1>🎉 Budget Approved.</h1>
-        <h2>Mission locked for tomorrow 6PM 😌💘</h2>
+        🎉 BUDGET APPROVED.<br>
+        Mission locked for tomorrow 18:00 hrs.<br>
+        Operator: You & Me 😌
     </div>
 </div>
 
@@ -113,71 +138,51 @@ button:hover {
 let yesSize = 16;
 let noClicks = 0;
 
-function switchScreen(hideId, showId) {
-    document.getElementById(hideId).classList.remove("active");
+function switchScreen(hide, show) {
+    document.getElementById(hide).classList.remove("active");
     setTimeout(() => {
-        document.getElementById(hideId).style.display = "none";
-        const showEl = document.getElementById(showId);
-        showEl.style.display = "block";
-        setTimeout(() => showEl.classList.add("active"), 10);
+        document.getElementById(hide).style.display = "none";
+        let s = document.getElementById(show);
+        s.style.display = "block";
+        setTimeout(() => s.classList.add("active"), 50);
     }, 400);
 }
 
 function chooseOption(choice) {
-    const reaction = document.getElementById("reaction");
 
-    if(choice === "dinner") {
-        reaction.innerText = "Ooo classy. I like this energy.";
-        showStep2("Fancy vibes or chill comfort food?",
-        ["✨ Fancy vibes", "😌 Chill comfort food"]);
-    }
+    let glowClass = "glowPink";
 
-    if(choice === "movie") {
-        reaction.innerText = "Cinema + food? Elite combo.";
-        showStep2("Rom-com or thriller?",
-        ["💕 Rom-com", "😱 Thriller"]);
-    }
+    if(choice === "dinner") glowClass = "glowGold";
+    if(choice === "movie") glowClass = "glowPurple";
+    if(choice === "tiramisu") glowClass = "glowPink";
+    if(choice === "walk") glowClass = "glowBlue";
+    if(choice === "surprise") glowClass = "glowPink";
 
-    if(choice === "tiramisu") {
-        reaction.innerText = "Sugar rush incoming.";
-        showStep2("Strict rating system or emotional judging?",
-        ["📊 Rating system", "🥹 Emotional judging"]);
-    }
+    document.body.className = glowClass;
 
-    if(choice === "walk") {
-        reaction.innerText = "Main character moment unlocked.";
-        showStep2("Deep talks or random gossip?",
-        ["🌌 Deep talks", "👀 Random gossip"]);
-    }
+    document.getElementById("step2Title").innerText =
+        "Confirm secondary preference 😏";
 
-    if(choice === "surprise") {
-        reaction.innerText = "You trust me? Dangerous decision.";
-        showStep2("Ready for whatever happens?",
-        ["😏 Obviously", "🤔 Slightly scared"]);
-    }
-}
-
-function showStep2(title, options) {
-    document.getElementById("step2Title").innerText = title;
-    const container = document.getElementById("step2Options");
+    let options = ["Option A", "Option B"];
+    let container = document.getElementById("step2Options");
     container.innerHTML = "";
 
     options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = goToFinal;
+        let btn = document.createElement("button");
+        btn.innerText = "> " + opt;
+        btn.onclick = goFinal;
         container.appendChild(btn);
     });
 
-    switchScreen("step1", "step2");
+    switchScreen("step1","step2");
 }
 
-function goToFinal() {
+function goFinal() {
     document.getElementById("finalText").innerText =
-        "Perfect. Tomorrow is sorted. But one more important question… Will you be my Valentine? 💘";
+        "Final Question: Will you be my Valentine? 💚";
 
     startCountdown();
-    switchScreen("step2", "finalScreen");
+    switchScreen("step2","finalScreen");
 }
 
 function sayYes() {
@@ -188,7 +193,7 @@ function sayYes() {
 
 function sayNo() {
     noClicks++;
-    yesSize += 20;
+    yesSize += 25;
 
     let yesBtn = document.getElementById("yesBtn");
     let noBtn = document.getElementById("noBtn");
@@ -197,37 +202,29 @@ function sayNo() {
     yesBtn.style.padding = yesSize/1.5 + "px";
 
     if(noClicks === 1) noBtn.innerText = "Are you sure?";
-    else if(noClicks === 2) noBtn.innerText = "Think again 😏";
-    else if(noClicks === 3) noBtn.innerText = "Pleaseee 🥺";
+    else if(noClicks === 2) noBtn.innerText = "System error. Try again.";
+    else if(noClicks === 3) noBtn.innerText = "Illegal move.";
     else if(noClicks >= 4) noBtn.style.display = "none";
 }
 
 function startCountdown() {
-    const countdownEl = document.getElementById("countdown");
-
+    const el = document.getElementById("countdown");
     const now = new Date();
     const target = new Date();
     target.setDate(now.getDate() + 1);
     target.setHours(18,0,0,0);
 
-    const interval = setInterval(() => {
-        const current = new Date();
-        const diff = target - current;
-
+    setInterval(() => {
+        const diff = target - new Date();
         if(diff <= 0) {
-            countdownEl.innerText = "It’s time 😌";
-            clearInterval(interval);
+            el.innerText = "MISSION TIME 💚";
             return;
         }
-
-        const hours = Math.floor(diff / (1000*60*60));
-        const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const seconds = Math.floor((diff % (1000*60)) / 1000);
-
-        countdownEl.innerText =
-            "Countdown to tomorrow 6PM: " +
-            hours + "h " + minutes + "m " + seconds + "s";
-    }, 1000);
+        const h = Math.floor(diff/(1000*60*60));
+        const m = Math.floor((diff%(1000*60*60))/(1000*60));
+        const s = Math.floor((diff%(1000*60))/1000);
+        el.innerText = "T-" + h + "h " + m + "m " + s + "s";
+    },1000);
 }
 </script>
 

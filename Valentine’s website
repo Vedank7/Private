@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Be My Valentine ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f0;
+        }
+
+        h1 {
+            margin-top: 40px;
+            color: #d63384;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Will you be my Valentine’s? 💘</h1>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="sayYes()">Yes</button>
+        <button id="noBtn" onclick="sayNo()">No</button>
+    </div>
+
+    <div id="celebration" class="hidden">
+        <img src="https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif" alt="Fireworks">
+        <h1>YAYYYY!!! 🎉💖</h1>
+    </div>
+
+<script>
+    let yesSize = 18;
+    let noClickCount = 0;
+
+    function sayYes() {
+        document.querySelector(".buttons").classList.add("hidden");
+        document.querySelector("h1").classList.add("hidden");
+        document.getElementById("celebration").classList.remove("hidden");
+    }
+
+    function sayNo() {
+        noClickCount++;
+        yesSize += 10;
+        document.getElementById("yesBtn").style.fontSize = yesSize + "px";
+        document.getElementById("yesBtn").style.padding = (yesSize) + "px";
+
+        let noBtn = document.getElementById("noBtn");
+
+        if (noClickCount === 1) {
+            noBtn.innerText = "Are you sure?";
+        } else if (noClickCount === 2) {
+            noBtn.innerText = "Please darling say yes 🥺";
+        } else if (noClickCount === 3) {
+            noBtn.innerText = "Last chance 😭";
+        } else {
+            noBtn.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

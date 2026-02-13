@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISSION: Tomorrow 😈</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: monospace;
+    background: black;
+    color: #00ff88;
+    text-align: center;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+/* Animated grid background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background:
+    repeating-linear-gradient(0deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px),
+    repeating-linear-gradient(90deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px);
+    animation: moveGrid 20s linear infinite;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+@keyframes moveGrid {
+    from { transform: translate(0,0); }
+    to { transform: translate(-200px,-200px); }
+}
+
+h1 {
+    margin-top: 40px;
+    font-size: 22px;
+    text-shadow: 0 0 10px #00ff88;
+    white-space: pre-line;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border: 2px solid #00ff88;
+    background: black;
+    color: #00ff88;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00ff88;
+    color: black;
+    box-shadow: 0 0 15px #00ff88;
+}
+
+.screen {
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease;
+}
+
+.screen.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Romantic glow themes */
+.glowPink { color:#ff4d6d; text-shadow:0 0 15px #ff4d6d; }
+.glowPurple { color:#c77dff; text-shadow:0 0 15px #c77dff; }
+.glowBlue { color:#4cc9f0; text-shadow:0 0 15px #4cc9f0; }
+.glowGold { color:#ffd60a; text-shadow:0 0 15px #ffd60a; }
+
+#countdown {
+    margin-top: 15px;
+}
+
+#celebration {
+    display:none;
+    font-size:20px;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="step1" class="screen active">
+    <h1>SELECT TOMORROW'S MISSION 😏</h1>
+
+    <button onclick="chooseOption('dinner')">> Cozy Dinner</button>
+    <button onclick="chooseOption('movie')">> Movie + Dinner</button>
+    <button onclick="chooseOption('tiramisu')">> Tiramisu Hopping</button>
+    <button onclick="chooseOption('walk')">> Night Walk + Ice Cream</button>
+    <button onclick="chooseOption('surprise')">> Surprise Mode</button>
+</div>
+
+<div id="step2" class="screen">
+    <h1 id="step2Title"></h1>
+    <div id="step2Options"></div>
+</div>
+
+<div id="finalScreen" class="screen">
+    <h1 id="finalText"></h1>
+    <div id="countdown"></div>
+
+    <button id="yesBtn" onclick="sayYes()">ACCEPT MISSION 💚</button>
+    <button id="noBtn" onclick="sayNo()">DECLINE ❌</button>
+
+    <div id="celebration">
+        🎉 BUDGET APPROVED.<br>
+        Mission locked for tomorrow 18:00 hrs.<br>
+        Operator: You & Me 😌
+    </div>
+</div>
+
+<script>
+let yesSize = 16;
+let noClicks = 0;
+let selectedMode = "";
+
+function switchScreen(hide, show) {
+    document.getElementById(hide).classList.remove("active");
+    setTimeout(() => {
+        document.getElementById(hide).style.display = "none";
+        let s = document.getElementById(show);
+        s.style.display = "block";
+        setTimeout(() => s.classList.add("active"), 50);
+    }, 400);
+}
+
+function chooseOption(choice) {
+
+    selectedMode = choice;
+
+    let glowClass = "glowPink";
+
+    if(choice === "dinner") glowClass = "glowGold";
+    if(choice === "movie") glowClass = "glowPurple";
+    if(choice === "tiramisu") glowClass = "glowPink";
+    if(choice === "walk") glowClass = "glowBlue";
+    if(choice === "surprise") glowClass = "glowPink";
+
+    document.body.className = glowClass;
+
+    document.getElementById("step2Title").innerText =
+        "Confirm secondary preference 😏";
+
+    let options = ["Proceed 😌", "Double Confirm 😏"];
+    let container = document.getElementById("step2Options");
+    container.innerHTML = "";
+
+    options.forEach(opt => {
+        let btn = document.createElement("button");
+        btn.innerText = "> " + opt;
+        btn.onclick = goFinal;
+        container.appendChild(btn);
+    });
+
+    switchScreen("step1","step2");
+}
+
+function goFinal() {
+
+    let finalMessage = "Final Question:\nWill you be my Valentine? 💚";
+
+    if(selectedMode === "surprise") {
+        finalMessage =
+        "Final Question:\nWill you be my Valentine? 💚\n\n" +
+        "Mission Includes:\n" +
+        "✔ Fun\n" +
+        "✔ Chaos\n" +
+        "✔ Memories\n" +
+        "✔ Classified: Heavy Make Out Session 😈";
+    }
+
+    document.getElementById("finalText").innerText = finalMessage;
+
+    startCountdown();
+    switchScreen("step2","finalScreen");
+}
+
+function sayYes() {
+    document.getElementById("yesBtn").style.display = "none";
+    document.getElementById("noBtn").style.display = "none";
+    document.getElementById("celebration").style.display = "block";
+}
+
+function sayNo() {
+    noClicks++;
+    yesSize += 25;
+
+    let yesBtn = document.getElementById("yesBtn");
+    let noBtn = document.getElementById("noBtn");
+
+    yesBtn.style.fontSize = yesSize + "px";
+    yesBtn.style.padding = yesSize/1.5 + "px";
+
+    if(noClicks === 1) noBtn.innerText = "Are you sure?";
+    else if(noClicks === 2) noBtn.innerText = "System error. Try again.";
+    else if(noClicks === 3) noBtn.innerText = "Illegal move detected.";
+    else if(noClicks >= 4) noBtn.style.display = "none";
+}
+
+function startCountdown() {
+    const el = document.getElementById("countdown");
+    const now = new Date();
+    const target = new Date();
+    target.setDate(now.getDate() + 1);
+    target.setHours(18,0,0,0);
+
+    setInterval(() => {
+        const diff = target - new Date();
+        if(diff <= 0) {
+            el.innerText = "MISSION TIME 💚";
+            return;
+        }
+        const h = Math.floor(diff/(1000*60*60));
+        const m = Math.floor((diff%(1000*60*60))/(1000*60));
+        const s = Math.floor((diff%(1000*60))/1000);
+        el.innerText = "T-" + h + "h " + m + "m " + s + "s";
+    },1000);
+}
+</script>
+
+</body>
+</html>

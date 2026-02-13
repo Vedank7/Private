@@ -12,28 +12,18 @@ body {
     color: #00ff88;
     text-align: center;
     overflow: hidden;
+    transition: 0.5s;
 }
 
-/* Animated background grid */
+/* Animated grid background */
 body::before {
     content: "";
     position: fixed;
     width: 200%;
     height: 200%;
-    background: repeating-linear-gradient(
-        0deg,
-        #003300 0px,
-        #003300 1px,
-        transparent 1px,
-        transparent 40px
-    ),
-    repeating-linear-gradient(
-        90deg,
-        #003300 0px,
-        #003300 1px,
-        transparent 1px,
-        transparent 40px
-    );
+    background:
+    repeating-linear-gradient(0deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px),
+    repeating-linear-gradient(90deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px);
     animation: moveGrid 20s linear infinite;
     opacity: 0.3;
     z-index: -1;
@@ -48,6 +38,15 @@ h1 {
     margin-top: 40px;
     font-size: 22px;
     text-shadow: 0 0 10px #00ff88;
+    white-space: pre-line;
+}
+
+.bigLove {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ff4d6d;
+    text-shadow: 0 0 20px #ff4d6d;
+    margin-top: 20px;
 }
 
 button {
@@ -81,6 +80,7 @@ button:hover {
     transform: scale(1);
 }
 
+/* Glow themes */
 .glowPink { color:#ff4d6d; text-shadow:0 0 15px #ff4d6d; }
 .glowPurple { color:#c77dff; text-shadow:0 0 15px #c77dff; }
 .glowBlue { color:#4cc9f0; text-shadow:0 0 15px #4cc9f0; }
@@ -124,19 +124,21 @@ button:hover {
     <h1 id="finalText"></h1>
     <div id="countdown"></div>
 
-    <button id="yesBtn" onclick="sayYes()">ACCEPT MISSION 💚</button>
-    <button id="noBtn" onclick="sayNo()">DECLINE ❌</button>
+    <button onclick="approveMission()">LOCK IT IN 💚</button>
 
     <div id="celebration">
         🎉 BUDGET APPROVED.<br>
         Mission locked for tomorrow 18:00 hrs.<br>
         Operator: You & Me 😌
+
+        <div class="bigLove">
+            MY SWEETHAARTT <3
+        </div>
     </div>
 </div>
 
 <script>
-let yesSize = 16;
-let noClicks = 0;
+let selectedMode = "";
 
 function switchScreen(hide, show) {
     document.getElementById(hide).classList.remove("active");
@@ -150,6 +152,8 @@ function switchScreen(hide, show) {
 
 function chooseOption(choice) {
 
+    selectedMode = choice;
+
     let glowClass = "glowPink";
 
     if(choice === "dinner") glowClass = "glowGold";
@@ -161,9 +165,9 @@ function chooseOption(choice) {
     document.body.className = glowClass;
 
     document.getElementById("step2Title").innerText =
-        "Confirm secondary preference 😏";
+        "Confirm mission 😏";
 
-    let options = ["Option A", "Option B"];
+    let options = ["Proceed 😌", "Double Confirm 😏"];
     let container = document.getElementById("step2Options");
     container.innerHTML = "";
 
@@ -178,33 +182,28 @@ function chooseOption(choice) {
 }
 
 function goFinal() {
-    document.getElementById("finalText").innerText =
-        "Final Question: Will you be my Valentine? 💚";
+
+    let message = "Mission Selected 😌";
+
+    if(selectedMode === "surprise") {
+        message =
+        "Surprise Mode Activated 😈\n\n" +
+        "Includes:\n" +
+        "✔ Fun\n" +
+        "✔ Chaos\n" +
+        "✔ Memories\n" +
+        "✔ Heavy Make Out Session 😏";
+    }
+
+    document.getElementById("finalText").innerText = message;
 
     startCountdown();
     switchScreen("step2","finalScreen");
 }
 
-function sayYes() {
-    document.getElementById("yesBtn").style.display = "none";
-    document.getElementById("noBtn").style.display = "none";
+function approveMission() {
+    document.querySelector("button").style.display = "none";
     document.getElementById("celebration").style.display = "block";
-}
-
-function sayNo() {
-    noClicks++;
-    yesSize += 25;
-
-    let yesBtn = document.getElementById("yesBtn");
-    let noBtn = document.getElementById("noBtn");
-
-    yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = yesSize/1.5 + "px";
-
-    if(noClicks === 1) noBtn.innerText = "Are you sure?";
-    else if(noClicks === 2) noBtn.innerText = "System error. Try again.";
-    else if(noClicks === 3) noBtn.innerText = "Illegal move.";
-    else if(noClicks >= 4) noBtn.style.display = "none";
 }
 
 function startCountdown() {

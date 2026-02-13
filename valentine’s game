@@ -1,238 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISSION: Tomorrow 😈</title>
+    <title>Be My Valentine ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    margin: 0;
-    font-family: monospace;
-    background: black;
-    color: #00ff88;
-    text-align: center;
-    overflow: hidden;
-    transition: 0.5s;
-}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f0;
+        }
 
-/* Animated grid background */
-body::before {
-    content: "";
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    background:
-    repeating-linear-gradient(0deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px),
-    repeating-linear-gradient(90deg,#003300 0px,#003300 1px,transparent 1px,transparent 40px);
-    animation: moveGrid 20s linear infinite;
-    opacity: 0.3;
-    z-index: -1;
-}
+        h1 {
+            margin-top: 40px;
+            color: #d63384;
+        }
 
-@keyframes moveGrid {
-    from { transform: translate(0,0); }
-    to { transform: translate(-200px,-200px); }
-}
+        .buttons {
+            margin-top: 20px;
+        }
 
-h1 {
-    margin-top: 40px;
-    font-size: 22px;
-    text-shadow: 0 0 10px #00ff88;
-    white-space: pre-line;
-}
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-button {
-    padding: 12px 20px;
-    margin: 10px;
-    font-size: 16px;
-    border: 2px solid #00ff88;
-    background: black;
-    color: #00ff88;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
 
-button:hover {
-    background: #00ff88;
-    color: black;
-    box-shadow: 0 0 15px #00ff88;
-}
+        #noBtn {
+            background-color: #6c757d;
+            color: white;
+        }
 
-.screen {
-    display: none;
-    opacity: 0;
-    transform: scale(0.9);
-    transition: all 0.5s ease;
-}
+        .hidden {
+            display: none;
+        }
 
-.screen.active {
-    display: block;
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* Romantic glow themes */
-.glowPink { color:#ff4d6d; text-shadow:0 0 15px #ff4d6d; }
-.glowPurple { color:#c77dff; text-shadow:0 0 15px #c77dff; }
-.glowBlue { color:#4cc9f0; text-shadow:0 0 15px #4cc9f0; }
-.glowGold { color:#ffd60a; text-shadow:0 0 15px #ffd60a; }
-
-#countdown {
-    margin-top: 15px;
-}
-
-#celebration {
-    display:none;
-    font-size:20px;
-    animation: pulse 1s infinite alternate;
-}
-
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
-}
-</style>
+        #celebration img {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="step1" class="screen active">
-    <h1>SELECT TOMORROW'S MISSION 😏</h1>
+    <h1>Will you be my Valentine’s? 💘</h1>
 
-    <button onclick="chooseOption('dinner')">> Cozy Dinner</button>
-    <button onclick="chooseOption('movie')">> Movie + Dinner</button>
-    <button onclick="chooseOption('tiramisu')">> Tiramisu Hopping</button>
-    <button onclick="chooseOption('walk')">> Night Walk + Ice Cream</button>
-    <button onclick="chooseOption('surprise')">> Surprise Mode</button>
-</div>
-
-<div id="step2" class="screen">
-    <h1 id="step2Title"></h1>
-    <div id="step2Options"></div>
-</div>
-
-<div id="finalScreen" class="screen">
-    <h1 id="finalText"></h1>
-    <div id="countdown"></div>
-
-    <button id="yesBtn" onclick="sayYes()">ACCEPT MISSION 💚</button>
-    <button id="noBtn" onclick="sayNo()">DECLINE ❌</button>
-
-    <div id="celebration">
-        🎉 BUDGET APPROVED.<br>
-        Mission locked for tomorrow 18:00 hrs.<br>
-        Operator: You & Me 😌
+    <div class="buttons">
+        <button id="yesBtn" onclick="sayYes()">Yes</button>
+        <button id="noBtn" onclick="sayNo()">No</button>
     </div>
-</div>
+
+    <div id="celebration" class="hidden">
+        <img src="https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif" alt="Fireworks">
+        <h1>YAYYYY!!! 🎉💖</h1>
+    </div>
 
 <script>
-let yesSize = 16;
-let noClicks = 0;
-let selectedMode = "";
+    let yesSize = 18;
+    let noClickCount = 0;
 
-function switchScreen(hide, show) {
-    document.getElementById(hide).classList.remove("active");
-    setTimeout(() => {
-        document.getElementById(hide).style.display = "none";
-        let s = document.getElementById(show);
-        s.style.display = "block";
-        setTimeout(() => s.classList.add("active"), 50);
-    }, 400);
-}
-
-function chooseOption(choice) {
-
-    selectedMode = choice;
-
-    let glowClass = "glowPink";
-
-    if(choice === "dinner") glowClass = "glowGold";
-    if(choice === "movie") glowClass = "glowPurple";
-    if(choice === "tiramisu") glowClass = "glowPink";
-    if(choice === "walk") glowClass = "glowBlue";
-    if(choice === "surprise") glowClass = "glowPink";
-
-    document.body.className = glowClass;
-
-    document.getElementById("step2Title").innerText =
-        "Confirm secondary preference 😏";
-
-    let options = ["Proceed 😌", "Double Confirm 😏"];
-    let container = document.getElementById("step2Options");
-    container.innerHTML = "";
-
-    options.forEach(opt => {
-        let btn = document.createElement("button");
-        btn.innerText = "> " + opt;
-        btn.onclick = goFinal;
-        container.appendChild(btn);
-    });
-
-    switchScreen("step1","step2");
-}
-
-function goFinal() {
-
-    let finalMessage = "Final Question:\nWill you be my Valentine? 💚";
-
-    if(selectedMode === "surprise") {
-        finalMessage =
-        "Final Question:\nWill you be my Valentine? 💚\n\n" +
-        "Mission Includes:\n" +
-        "✔ Fun\n" +
-        "✔ Chaos\n" +
-        "✔ Memories\n" +
-        "✔ Classified: Heavy Make Out Session 😈";
+    function sayYes() {
+        document.querySelector(".buttons").classList.add("hidden");
+        document.querySelector("h1").classList.add("hidden");
+        document.getElementById("celebration").classList.remove("hidden");
     }
 
-    document.getElementById("finalText").innerText = finalMessage;
+    function sayNo() {
+        noClickCount++;
 
-    startCountdown();
-    switchScreen("step2","finalScreen");
-}
+        let yesBtn = document.getElementById("yesBtn");
+        let noBtn = document.getElementById("noBtn");
 
-function sayYes() {
-    document.getElementById("yesBtn").style.display = "none";
-    document.getElementById("noBtn").style.display = "none";
-    document.getElementById("celebration").style.display = "block";
-}
+        // Increase YES size aggressively
+        yesSize += 25;
+        yesBtn.style.fontSize = yesSize + "px";
+        yesBtn.style.padding = (yesSize * 0.8) + "px";
 
-function sayNo() {
-    noClicks++;
-    yesSize += 25;
-
-    let yesBtn = document.getElementById("yesBtn");
-    let noBtn = document.getElementById("noBtn");
-
-    yesBtn.style.fontSize = yesSize + "px";
-    yesBtn.style.padding = yesSize/1.5 + "px";
-
-    if(noClicks === 1) noBtn.innerText = "Are you sure?";
-    else if(noClicks === 2) noBtn.innerText = "System error. Try again.";
-    else if(noClicks === 3) noBtn.innerText = "Illegal move detected.";
-    else if(noClicks >= 4) noBtn.style.display = "none";
-}
-
-function startCountdown() {
-    const el = document.getElementById("countdown");
-    const now = new Date();
-    const target = new Date();
-    target.setDate(now.getDate() + 1);
-    target.setHours(18,0,0,0);
-
-    setInterval(() => {
-        const diff = target - new Date();
-        if(diff <= 0) {
-            el.innerText = "MISSION TIME 💚";
-            return;
+        // Change NO button text progressively
+        if (noClickCount === 1) {
+            noBtn.innerText = "Are you sure?";
+        } else if (noClickCount === 2) {
+            noBtn.innerText = "Think carefully 😏";
+        } else if (noClickCount === 3) {
+            noBtn.innerText = "Pleaseeee 🥺";
+        } else if (noClickCount === 4) {
+            noBtn.innerText = "Last chance 😭";
+        } else {
+            // Make YES dominate screen
+            yesBtn.style.width = "90vw";
+            yesBtn.style.height = "25vh";
+            yesBtn.style.fontSize = "40px";
+            noBtn.style.display = "none";
         }
-        const h = Math.floor(diff/(1000*60*60));
-        const m = Math.floor((diff%(1000*60*60))/(1000*60));
-        const s = Math.floor((diff%(1000*60))/1000);
-        el.innerText = "T-" + h + "h " + m + "m " + s + "s";
-    },1000);
-}
+    }
 </script>
 
 </body>
